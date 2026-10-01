@@ -1,0 +1,41 @@
+# Built by Gradle / Android Studio
+*.iml
+.gradle/
+/build/
+/captures/
+.externalNativeBuild
+.cxx/
+/app/build/
+/app/release/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+
+# Local configuration (machine-specific paths, never commit)
+local.properties
+keystore.properties
+*.jks
+*.keystore
+
+# Android Studio / IntelliJ
+.idea/
+*.hprof
+.cxx/
+
+# Version control
+.git/
+.gitattributes.bak
+
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and temp files
+*.log
+captures/
+.externalNativeBuild/
+.gradle/
+tmp/

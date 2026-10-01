@@ -1,0 +1,41 @@
+# cloudPlus - environment requirements
+#
+# The Android SDK is NOT installed via pip/apt here; it is located on disk.
+# This file documents the exact toolchain versions this project is built and
+# verified against, plus how to verify each one is present.
+
+# --- Toolchain (already installed on this machine) ---
+#
+# JDK 17 (LTS) - Gradle toolchain + Kotlin/Android compile target
+#   Installed: /usr/lib/jvm/java-17-openjdk-amd64
+#   Note: JDK 25 is also present as the system default. This project targets
+#   JDK 17 deliberately for the widest toolchain compatibility.
+JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+
+# Android SDK
+ANDROID_HOME=/home/umbo/Android/Sdk
+ANDROID_SDK_ROOT=/home/umbo/Android/Sdk
+
+# Android platforms installed: android-34, android-35, android-36
+# Build tools installed: 35.0.0, 36.0.0
+
+# --- Versions pinned in gradle/libs.versions.toml ---
+#
+# Gradle (wrapper)   9.4.1     via gradle/wrapper/gradle-wrapper.properties
+# Android Gradle     9.2.1     com.android.application
+# Plugin (AGP)                AGP 9 has built-in Kotlin support
+# Kotlin             2.2.10    supplied by AGP's built-in Kotlin runtime;
+#                               org.jetbrains.kotlin.android is NOT applied
+# Compose compiler   2.2.10    org.jetbrains.kotlin.plugin.compose
+# Compose BOM        2026.03.01
+# compileSdk         36
+# minSdk             24
+# targetSdk          36
+
+# --- Optional tooling ---
+#
+# Git               2.53.0
+# adb (platform-tools) /home/umbo/Android/Sdk/platform-tools/adb
+#
+# NOTE: the system-wide `gradle` on this machine is 4.4.1, which is far too
+# old for AGP 9. Always use the project wrapper: ./gradlew
