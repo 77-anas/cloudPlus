@@ -1,6 +1,7 @@
 # Built by Gradle / Android Studio
 *.iml
 .gradle/
+.kotlin/
 /build/
 /captures/
 .externalNativeBuild

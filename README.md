@@ -1,120 +1,131 @@
 # cloudPlus
 
-An Android app scaffolded with Kotlin and Jetpack Compose.
+An Android application scaffolded with Kotlin and Jetpack Compose.
 
-Built on **AGP 9.2.1**, which has **built-in Kotlin support**. That is the most
-important thing to know about this project: the `org.jetbrains.kotlin.android`
-plugin is deliberately *not* applied anywhere. Adding it will fail the build with
-> The 'org.jetbrains.kotlin.android' plugin is no longer required for Kotlin
-> support since AGP 9.0.
+## 🚀 Tech Stack & Architecture
 
-## Requirements
+- **Language:** Kotlin 2.2.10 (built-in AGP support)
+- **UI Toolkit:** Jetpack Compose (Material 3)
+- **Build System:** Gradle 9.4.1 with Android Gradle Plugin (AGP) 9.2.1
+- **Minimum SDK:** API 24 (Android 7.0)
+- **Target / Compile SDK:** API 36
 
-| Tool | Version | Notes |
-| --- | --- | --- |
-| JDK | 17 (LTS) | `JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64` |
-| Android SDK | platform 36, build-tools 36.0.0 | `ANDROID_HOME=/home/umbo/Android/Sdk` |
-| Gradle | 9.4.1 | Use the bundled wrapper, `./gradlew` |
+> **Important Note on AGP 9+:** This project uses AGP 9.2.1, which features **built-in Kotlin support**. The legacy `org.jetbrains.kotlin.android` plugin is intentionally *not* applied in `build.gradle.kts`. Do not add it, as AGP 9 manages Kotlin compilation natively.
 
-The `gradle` binary on this machine is 4.4.1, which is far too old for AGP 9.
-Always build through the wrapper.
+---
 
-## Setup
+## 📋 Prerequisites
 
+Before setting up the project, ensure you have the following installed on your development machine:
+
+1. **JDK 17 (LTS)**: Ensure your `JAVA_HOME` environment variable points to a Java 17 installation.
+2. **Android SDK**: Platform 36 and build-tools 36.0.0. Ensure your `ANDROID_HOME` environment variable is configured.
+3. **Android Studio** (Koala or newer recommended) or command-line Android command-line tools.
+
+---
+
+## 🛠️ Setup Guide for Team Members
+
+Follow these steps to clone and set up the project on your local machine:
+
+### 1. Clone the Repository
 ```bash
-cd /home/umbo/projects/cloudPlus
-
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-export ANDROID_HOME=/home/umbo/Android/Sdk
+git clone <your-repository-url>
+cd cloudPlus
 ```
 
-`local.properties` already points at the SDK. It is git-ignored, so on a new
-machine create it yourself:
+### 2. Configure `local.properties`
+Android Studio or Gradle requires a `local.properties` file at the root of the project to locate your local Android SDK.
 
-```bash
-echo "sdk.dir=$ANDROID_HOME" > local.properties
-```
+Create a `local.properties` file in the project root directory:
 
-Accept the Android SDK licenses, if you have not already:
+- **macOS / Linux:**
+  ```bash
+  echo "sdk.dir=$HOME/Library/Android/sdk" > local.properties
+  ```
+  *(Or point to your custom Linux Android SDK path, e.g., `/home/username/Android/Sdk`)*
 
+- **Windows:**
+  Create a `local.properties` file with:
+  ```properties
+  sdk.dir=C\:\\Users\\YourUsername\\AppData\\Local\\Android\\Sdk
+  ```
+
+### 3. Accept SDK Licenses (if required)
+If your SDK licenses are not yet accepted on your machine:
 ```bash
 yes | sdkmanager --licenses
 ```
 
-## Build
+---
 
-```bash
-./gradlew assembleDebug        # debug APK
-./gradlew assembleRelease      # release APK (minified, needs a signing key)
-./gradlew installDebug         # build and install on a connected device
-./gradlew clean                # remove build output
-```
+## 🔨 Building the Project
 
-The debug APK lands at:
+Always use the included Gradle wrapper (`./gradlew`) rather than a global Gradle installation to ensure version consistency.
 
-```
-app/build/outputs/apk/debug/app-debug.apk
-```
+### Common Gradle Commands:
 
-## Run on a device
+- **Build Debug APK:**
+  ```bash
+  ./gradlew assembleDebug
+  ```
+- **Build Release APK (Minified):**
+  ```bash
+  ./gradlew assembleRelease
+  ```
+- **Clean Build Artifacts:**
+  ```bash
+  ./gradlew clean
+  ```
 
-With a device or emulator connected and USB debugging enabled:
+---
 
-```bash
-adb devices            # confirm the device is listed
-./gradlew installDebug
-adb shell am start -n com.umbo.cloudplus.debug/com.umbo.cloudplus.MainActivity
-```
+## 📱 Running the App
 
-Note the `.debug` suffix: the debug build type sets
-`applicationIdSuffix = ".debug"`, so it installs alongside a release build
-instead of overwriting it.
+1. Connect an Android device or start an Android Emulator with USB Debugging enabled.
+2. Verify the device is connected:
+   ```bash
+   adb devices
+   ```
+3. Build and install the debug build:
+   ```bash
+   ./gradlew installDebug
+   ```
+4. Launch the app manually or via adb:
+   ```bash
+   adb shell am start -n com.umbo.cloudplus.debug/com.umbo.cloudplus.MainActivity
+   ```
 
-## Project layout
+*Note:* The debug build configuration uses `applicationIdSuffix = ".debug"`, allowing debug and release builds to be installed side-by-side on the same device.
+
+---
+
+## 📂 Project Structure
 
 ```
 cloudPlus/
 ├── app/
-│   ├── build.gradle.kts              # AGP config; no kotlin-android plugin
-│   ├── proguard-rules.pro            # R8 rules for release builds
+│   ├── build.gradle.kts          # App-level AGP config (no kotlin-android plugin)
+│   ├── proguard-rules.pro        # R8 rules for release minification
 │   └── src/main/
 │       ├── AndroidManifest.xml
 │       ├── java/com/umbo/cloudplus/
-│       │   ├── MainActivity.kt       # entry point + Compose UI
-│       │   └── ui/theme/             # Material 3 theme and typography
-│       └── res/                      # strings, themes, adaptive launcher icon
+│       │   ├── MainActivity.kt   # Entry point & Compose UI root
+│       │   └── ui/theme/         # Material 3 color scheme, typography, and theme
+│       └── res/                  # App resources, strings, themes, and icons
 ├── gradle/
-│   ├── libs.versions.toml            # single source of truth for versions
-│   └── wrapper/                      # Gradle wrapper
+│   ├── libs.versions.toml        # Version Catalog (single source of truth for dependencies)
+│   └── wrapper/                  # Gradle wrapper binaries
 ├── build.gradle.kts
 ├── settings.gradle.kts
 ├── gradle.properties
-├── requirements.txt
 └── README.md
 ```
 
-## Versions
+---
 
-Versions live in `gradle/libs.versions.toml` so there is one place to change
-them. Current set:
+## 📌 Development Guidelines for Contributors
 
-- Gradle 9.4.1
-- Android Gradle Plugin 9.2.1
-- Kotlin 2.2.10 (provided by AGP's built-in Kotlin; not declared in `plugins {}`)
-- Compose compiler plugin 2.2.10
-- Compose BOM 2026.03.01
-- compileSdk 36, minSdk 24, targetSdk 36
-- Java 17 source and target compatibility
-
-The Compose compiler plugin version must track the Kotlin version AGP supplies.
-If you bump AGP, check its bundled Kotlin version and keep the two in step.
-
-## Notes for future work
-
-- **Do not add `kotlin-android`.** AGP 9 compiles Kotlin already.
-- **`kapt` is incompatible** with built-in Kotlin. Use KSP, or
-  `com.android.legacy-kapt` as a fallback.
-- **No DI yet.** Ktor, a database, and auth are all still to be added. Koin is a
-  natural fit alongside Ktor here.
-- Release builds enable `isMinifyEnabled` and `isShrinkResources`, so add
-  keep rules to `proguard-rules.pro` as reflective libraries come in.
+- **Dependencies:** Always add or update library versions in `gradle/libs.versions.toml`.
+- **Kotlin & KSP:** AGP 9 built-in Kotlin compilation is active. If annotation processors are needed, use KSP (`com.google.devtools.ksp`) rather than legacy `kapt`.
+- **Branching & PRs:** Create feature branches from `main` and submit Pull Requests for review.
