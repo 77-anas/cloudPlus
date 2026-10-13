@@ -11,36 +11,38 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-private val Blue40 = Color(0xFF2563EB)
-private val Blue80 = Color(0xFF93C5FD)
-private val BlueGrey40 = Color(0xFF4A5568)
-private val BlueGrey80 = Color(0xFFCBD5E0)
+private val DarkBackgroundColor = Color(0xFF16191B)
+private val DarkSurfaceColor = Color(0xFF202427)
+private val DarkSurfaceVariant = Color(0xFF2B3135)
+private val DarkPrimaryColor = Color(0xFF38B6FF)
+private val DarkTealContainer = Color(0xFF2C4347)
+private val DarkOnSurface = Color(0xFFE2E8EE)
+private val DarkOnSurfaceVariant = Color(0xFF9EACB5)
 
 private val LightColors = lightColorScheme(
-    primary = Blue40,
-    secondary = BlueGrey40,
+    primary = Color(0xFF006494),
+    surface = Color(0xFFF8F9FA),
+    background = Color(0xFFF8F9FA),
 )
 
 private val DarkColors = darkColorScheme(
-    primary = Blue80,
-    secondary = BlueGrey80,
+    primary = DarkPrimaryColor,
+    background = DarkBackgroundColor,
+    surface = DarkSurfaceColor,
+    surfaceVariant = DarkSurfaceVariant,
+    onBackground = DarkOnSurface,
+    onSurface = DarkOnSurface,
+    onSurfaceVariant = DarkOnSurfaceVariant,
+    secondaryContainer = DarkTealContainer,
 )
 
 @Composable
 fun cloudPlusTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    darkTheme: Boolean = true, // Default to dark theme to match Unlim Cloud UI
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit,
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColors
-        else -> LightColors
-    }
+    val colorScheme = if (darkTheme) DarkColors else LightColors
 
     MaterialTheme(
         colorScheme = colorScheme,
